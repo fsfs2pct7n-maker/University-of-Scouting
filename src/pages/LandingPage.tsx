@@ -1,10 +1,12 @@
 import { useNavigate } from 'react-router-dom'
+import { Calendar, MapPin, Bell, Smartphone, ArrowRight } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 
-const FEATURES = [
-  { emoji: '📅', title: 'Personal Schedule', desc: 'View all your registered classes and activities in one place.' },
-  { emoji: '📍', title: 'Interactive Map', desc: '76 campus pins with search, filters, and turn-by-turn directions.' },
-  { emoji: '🔔', title: 'Live Notifications', desc: 'Get instant alerts on class changes, cancellations, and announcements.' },
-  { emoji: '📱', title: 'Mobile Ready', desc: 'Designed for phones. Works offline. No app store required.' },
+const FEATURES: { icon: LucideIcon; title: string; desc: string }[] = [
+  { icon: Calendar,   title: 'Personalized Schedule', desc: 'Every class and activity organized in one clear, sortable view.' },
+  { icon: MapPin,     title: 'Interactive Map',       desc: '76 campus locations with search, filters, and directions.' },
+  { icon: Bell,       title: 'Live Notifications',    desc: 'Instant alerts when classes change, get cancelled, or move.' },
+  { icon: Smartphone, title: 'Mobile First',          desc: 'Designed for phones. Fast, smooth, works without an app store.' },
 ]
 
 export default function LandingPage() {
@@ -13,143 +15,148 @@ export default function LandingPage() {
   return (
     <div style={{
       minHeight: '100vh',
-      backgroundColor: '#f5f0e8',
+      backgroundColor: 'var(--color-bg-warm)',
       display: 'flex',
       flexDirection: 'column',
     }}>
-
-      {/* Hero */}
+      {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <div style={{
-        backgroundColor: '#cfb991',
-        padding: '48px 24px 36px',
+        background: 'linear-gradient(160deg, #cfb991 0%, #b39b77 100%)',
+        padding: 'clamp(40px, 9vw, 64px) 24px clamp(48px, 10vw, 72px)',
         textAlign: 'center',
+        position: 'relative',
+        overflow: 'hidden',
       }}>
+        {/* Subtle decorative circle */}
+        <div style={{
+          position: 'absolute',
+          top: '-80px',
+          right: '-80px',
+          width: '240px',
+          height: '240px',
+          borderRadius: '50%',
+          backgroundColor: 'rgba(255,255,255,0.08)',
+          pointerEvents: 'none',
+        }} />
+
         <img
           src="/seal.png"
           alt="Sagamore Council seal"
-          style={{ width: 'clamp(80px, 22vw, 140px)', height: 'clamp(80px, 22vw, 140px)', marginBottom: '16px' }}
-          onError={e => {
-            const el = e.currentTarget
-            el.style.display = 'none'
+          style={{
+            width: 'clamp(96px, 22vw, 140px)',
+            height: 'clamp(96px, 22vw, 140px)',
+            marginBottom: '18px',
+            filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.15))',
           }}
+          onError={e => { e.currentTarget.style.display = 'none' }}
         />
-        <h1 style={{
-          fontSize: 'clamp(22px, 6vw, 32px)',
-          fontWeight: 900,
-          color: '#3a2e1e',
-          lineHeight: 1.2,
-          marginBottom: '8px',
+        <h1 className="text-display" style={{
+          color: '#2c2c2c',
+          marginBottom: '10px',
+          textShadow: '0 1px 2px rgba(255,255,255,0.2)',
         }}>
           University of Scouting
         </h1>
         <p style={{
-          fontSize: 'clamp(13px, 3.5vw, 16px)',
-          color: '#5a4a30',
-          maxWidth: '340px',
+          fontSize: 'clamp(14px, 3.5vw, 17px)',
+          color: '#3a2e1e',
+          maxWidth: '420px',
           margin: '0 auto',
           lineHeight: 1.5,
+          fontWeight: 500,
         }}>
           Event management for Scout Leaders &amp; Participants
         </p>
-        <p style={{ fontSize: '12px', color: '#7a6540', marginTop: '6px' }}>
-          Crossroads of America Council · Purdue University
+        <p style={{
+          fontSize: '12px',
+          color: 'rgba(58,46,30,0.7)',
+          marginTop: '8px',
+          fontWeight: 600,
+          letterSpacing: '0.04em',
+          textTransform: 'uppercase',
+        }}>
+          Crossroads of America Council · Purdue
         </p>
       </div>
 
-      {/* Feature cards */}
+      {/* ── Content ──────────────────────────────────────────────────────── */}
       <div style={{
-        padding: '24px 16px',
+        padding: '24px 16px 32px',
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
-        gap: '12px',
-        maxWidth: '600px',
+        gap: '16px',
+        maxWidth: '720px',
         width: '100%',
         margin: '0 auto',
         boxSizing: 'border-box',
       }}>
-        <p style={{
-          fontSize: '12px',
-          fontWeight: 700,
-          color: '#aaa',
-          textTransform: 'uppercase',
-          letterSpacing: '0.06em',
-          textAlign: 'center',
-          marginBottom: '4px',
-        }}>
+        <p className="text-label" style={{ textAlign: 'center', marginTop: '4px' }}>
           Everything you need
         </p>
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
           gap: '12px',
         }}>
           {FEATURES.map(f => (
             <div
               key={f.title}
-              style={{
-                backgroundColor: '#fff',
-                borderRadius: '12px',
-                padding: '16px',
-                border: '1px solid #ece7df',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-                display: 'flex',
-                gap: '12px',
-                alignItems: 'flex-start',
-              }}
+              className="card"
+              style={{ padding: '18px', display: 'flex', gap: '14px', alignItems: 'flex-start' }}
             >
-              <span style={{ fontSize: '24px', flexShrink: 0, marginTop: '1px' }}>{f.emoji}</span>
-              <div>
-                <p style={{ fontSize: '14px', fontWeight: 700, color: '#3a2e1e', marginBottom: '3px' }}>
+              <div style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: 'var(--radius-md)',
+                backgroundColor: 'var(--color-primary-bg)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              }}>
+                <f.icon size={20} color="var(--color-primary-dark)" strokeWidth={2.2} />
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <p style={{ fontSize: '15px', fontWeight: 700, color: 'var(--color-text-dark)', marginBottom: '4px' }}>
                   {f.title}
                 </p>
-                <p style={{ fontSize: '13px', color: '#888', lineHeight: 1.45 }}>{f.desc}</p>
+                <p style={{ fontSize: '13.5px', color: 'var(--color-text-secondary)', lineHeight: 1.5 }}>
+                  {f.desc}
+                </p>
               </div>
             </div>
           ))}
         </div>
 
-        {/* CTA */}
-        <div style={{
-          backgroundColor: '#fff',
-          borderRadius: '14px',
-          padding: '24px 20px',
-          border: '1px solid #ece7df',
-          boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
-          textAlign: 'center',
-          marginTop: '8px',
-        }}>
-          <h2 style={{ fontSize: '17px', fontWeight: 800, color: '#3a2e1e', marginBottom: '6px' }}>
+        {/* CTA card */}
+        <div
+          className="card"
+          style={{
+            padding: '28px 24px',
+            textAlign: 'center',
+            marginTop: '8px',
+            background: 'linear-gradient(180deg, #ffffff 0%, #fffaf0 100%)',
+          }}
+        >
+          <h2 className="text-h2" style={{ marginBottom: '8px' }}>
             Ready to get started?
           </h2>
-          <p style={{ fontSize: '13px', color: '#888', marginBottom: '20px' }}>
-            Sign in with your email to view your personalized schedule.
+          <p style={{ fontSize: '14px', color: 'var(--color-text-secondary)', marginBottom: '20px', maxWidth: '320px', margin: '0 auto 20px' }}>
+            Sign in with your registered email to view your personalized schedule and event information.
           </p>
           <button
             onClick={() => navigate('/login')}
-            style={{
-              width: '100%',
-              height: '48px',
-              backgroundColor: '#cfb991',
-              color: '#fff',
-              fontWeight: 700,
-              fontSize: '16px',
-              border: 'none',
-              borderRadius: '10px',
-              cursor: 'pointer',
-              transition: 'background-color 150ms, transform 100ms',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#b8a07a' }}
-            onMouseLeave={e => { e.currentTarget.style.backgroundColor = '#cfb991' }}
-            onMouseDown={e => { e.currentTarget.style.transform = 'scale(0.98)' }}
-            onMouseUp={e => { e.currentTarget.style.transform = 'scale(1)' }}
+            className="btn-primary"
+            style={{ width: '100%', height: '48px', fontSize: '15px', maxWidth: '340px' }}
           >
             Sign In
+            <ArrowRight size={16} />
           </button>
         </div>
 
-        <p style={{ fontSize: '11px', color: '#bbb', textAlign: 'center', marginTop: '4px' }}>
+        <p style={{ fontSize: '11px', color: 'var(--color-text-faint)', textAlign: 'center', marginTop: '8px' }}>
           © 2025 University of Scouting · Crossroads of America Council
         </p>
       </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { ArrowRight, AlertCircle } from 'lucide-react'
 
 export default function LoginPage() {
   const navigate = useNavigate()
@@ -8,20 +9,14 @@ export default function LoginPage() {
   const [error, setError] = useState('')
 
   function handleLogin() {
-    if (!email.trim()) {
-      setError('Please enter your email address.')
-      return
-    }
+    if (!email.trim()) { setError('Please enter your email address.'); return }
     setError('')
     localStorage.setItem('studentEmail', email.trim().toLowerCase())
     navigate('/schedule')
   }
 
   function handleAdminLogin() {
-    if (!email.trim()) {
-      setError('Please enter your email address.')
-      return
-    }
+    if (!email.trim()) { setError('Please enter your email address.'); return }
     setError('')
     localStorage.setItem('adminEmail', email.trim().toLowerCase())
     localStorage.setItem('userRole', 'admin')
@@ -32,7 +27,7 @@ export default function LoginPage() {
     <div
       style={{
         minHeight: '100vh',
-        backgroundColor: '#f5f0e8',
+        background: 'linear-gradient(180deg, #faf7f1 0%, #f5f0e8 100%)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -40,156 +35,126 @@ export default function LoginPage() {
         padding: '24px 16px',
       }}
     >
-      {/* Logo / branding */}
-      <div style={{ textAlign: 'center', marginBottom: '28px' }}>
+      {/* Branding */}
+      <div style={{ textAlign: 'center', marginBottom: '28px', animation: 'fadeIn 0.4s ease-out' }}>
         <img
           src="/seal.png"
           alt="University of Scouting seal"
-          style={{ width: '72px', height: '72px', marginBottom: '14px' }}
+          style={{
+            width: '76px',
+            height: '76px',
+            marginBottom: '14px',
+            filter: 'drop-shadow(0 3px 8px rgba(0,0,0,0.10))',
+          }}
           onError={e => { e.currentTarget.style.display = 'none' }}
         />
-        <h1 style={{ fontSize: '22px', fontWeight: 800, color: '#3a2e1e', margin: 0 }}>
+        <h1 className="text-h1" style={{ marginBottom: '4px' }}>
           University of Scouting
         </h1>
-        <p style={{ fontSize: '13px', color: '#888', marginTop: '4px' }}>
+        <p style={{ fontSize: '13px', color: 'var(--color-text-muted)', fontWeight: 500 }}>
           Crossroads of America Council
         </p>
       </div>
 
-      {/* Card */}
+      {/* Login card */}
       <div
+        className="card"
         style={{
           width: '100%',
-          maxWidth: '380px',
-          backgroundColor: '#fff',
-          borderRadius: '14px',
-          boxShadow: '0 4px 24px rgba(0,0,0,0.10)',
+          maxWidth: '400px',
           padding: '28px 24px',
-          border: '1px solid #f0ece5',
+          animation: 'slideInUp 0.3s ease-out',
         }}
       >
-        <h2 style={{ fontSize: '17px', fontWeight: 700, color: '#3a2e1e', marginBottom: '20px' }}>
+        <h2 className="text-h3" style={{ marginBottom: '4px', fontWeight: 700 }}>
           Sign In
         </h2>
+        <p style={{ fontSize: '13px', color: 'var(--color-text-secondary)', marginBottom: '22px' }}>
+          Enter your registered email to continue
+        </p>
 
         {/* Email */}
         <div style={{ marginBottom: '14px' }}>
           <label
-            style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#666', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.04em' }}
+            htmlFor="email"
+            style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: 'var(--color-text-dark)', marginBottom: '6px', letterSpacing: '0.02em' }}
           >
             Email Address
           </label>
           <input
+            id="email"
             type="email"
+            autoComplete="email"
             value={email}
             onChange={e => setEmail(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleLogin()}
-            placeholder="Enter your email"
-            style={{
-              width: '100%',
-              padding: '12px 14px',
-              fontSize: '16px',
-              border: '1.5px solid #e0d9cf',
-              borderRadius: '8px',
-              outline: 'none',
-              boxSizing: 'border-box',
-              color: '#333',
-              backgroundColor: '#fafaf8',
-              transition: 'border-color 150ms',
-              minHeight: '48px',
-            }}
-            onFocus={e => { e.currentTarget.style.borderColor = '#cfb991' }}
-            onBlur={e => { e.currentTarget.style.borderColor = '#e0d9cf' }}
+            placeholder="you@example.com"
+            style={{ width: '100%', padding: '12px 14px' }}
           />
         </div>
 
         {/* Password */}
         <div style={{ marginBottom: '8px' }}>
           <label
-            style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#666', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.04em' }}
+            htmlFor="password"
+            style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: 'var(--color-text-dark)', marginBottom: '6px', letterSpacing: '0.02em' }}
           >
-            Password
+            Password <span style={{ color: 'var(--color-text-muted)', fontWeight: 500 }}>(optional)</span>
           </label>
           <input
+            id="password"
             type="password"
+            autoComplete="current-password"
             value={password}
             onChange={e => setPassword(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleLogin()}
-            placeholder="Enter password"
-            style={{
-              width: '100%',
-              padding: '12px 14px',
-              fontSize: '16px',
-              border: '1.5px solid #e0d9cf',
-              borderRadius: '8px',
-              outline: 'none',
-              boxSizing: 'border-box',
-              color: '#333',
-              backgroundColor: '#fafaf8',
-              transition: 'border-color 150ms',
-              minHeight: '48px',
-            }}
-            onFocus={e => { e.currentTarget.style.borderColor = '#cfb991' }}
-            onBlur={e => { e.currentTarget.style.borderColor = '#e0d9cf' }}
+            placeholder="Enter password if you have one"
+            style={{ width: '100%', padding: '12px 14px' }}
           />
         </div>
 
         {/* Error */}
         {error && (
-          <p style={{ fontSize: '13px', color: '#e05252', marginBottom: '12px', marginTop: '4px' }}>
-            {error}
-          </p>
+          <div
+            className="animate-shake"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '10px 12px',
+              backgroundColor: 'var(--color-error-bg)',
+              border: '1px solid #f5c6c1',
+              borderRadius: 'var(--radius-md)',
+              marginTop: '12px',
+            }}
+          >
+            <AlertCircle size={16} color="var(--color-error)" />
+            <p style={{ fontSize: '13px', color: 'var(--color-error)', fontWeight: 500 }}>{error}</p>
+          </div>
         )}
 
         {/* Buttons */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '20px' }}>
           <button
             onClick={handleLogin}
-            style={{
-              width: '100%',
-              padding: '12px',
-              backgroundColor: '#cfb991',
-              color: '#fff',
-              fontWeight: 700,
-              fontSize: '15px',
-              border: 'none',
-              borderRadius: '9px',
-              cursor: 'pointer',
-              transition: 'background-color 150ms, transform 100ms',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#b8a07a' }}
-            onMouseLeave={e => { e.currentTarget.style.backgroundColor = '#cfb991' }}
-            onMouseDown={e => { e.currentTarget.style.transform = 'scale(0.98)' }}
-            onMouseUp={e => { e.currentTarget.style.transform = 'scale(1)' }}
+            className="btn-primary"
+            style={{ width: '100%', height: '48px', fontSize: '15px' }}
           >
-            Login
+            Sign In
+            <ArrowRight size={16} />
           </button>
 
           <button
             onClick={handleAdminLogin}
-            style={{
-              width: '100%',
-              padding: '12px',
-              backgroundColor: 'transparent',
-              color: '#cfb991',
-              fontWeight: 600,
-              fontSize: '14px',
-              border: '1.5px solid #cfb991',
-              borderRadius: '9px',
-              cursor: 'pointer',
-              transition: 'background-color 150ms, transform 100ms',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#f7f2eb' }}
-            onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent' }}
-            onMouseDown={e => { e.currentTarget.style.transform = 'scale(0.98)' }}
-            onMouseUp={e => { e.currentTarget.style.transform = 'scale(1)' }}
+            className="btn-secondary"
+            style={{ width: '100%', height: '46px', fontSize: '14px' }}
           >
             Admin Login
           </button>
         </div>
       </div>
 
-      <p style={{ fontSize: '11px', color: '#aaa', marginTop: '24px', textAlign: 'center' }}>
+      <p style={{ fontSize: '11px', color: 'var(--color-text-faint)', marginTop: '24px', textAlign: 'center' }}>
         © 2025 University of Scouting · Crossroads of America Council
       </p>
     </div>

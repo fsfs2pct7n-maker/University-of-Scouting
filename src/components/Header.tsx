@@ -3,23 +3,23 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { isLoggedIn, clearSession } from '../utils/auth'
 
 const PAGE_TITLES: Record<string, string> = {
-  '/schedule': 'Individual Schedule',
-  '/maps': 'Maps',
-  '/schedules-info': 'Schedules / Info',
-  '/notifications': 'Notifications',
-  '/badge-list': 'Badge List',
-  '/attractions-amenities': 'Attractions and Amenities',
+  '/schedule': 'Your Schedule',
+  '/maps': 'Explore Locations',
+  '/schedules-info': 'Schedules & Info',
+  '/notifications': 'Your Messages',
+  '/badge-list': 'Available Classes',
+  '/attractions-amenities': 'Attractions',
   '/uos-kokomo': 'UoS Kokomo',
   '/profile': 'Profile',
-  '/important-information': 'Important Information',
+  '/important-information': 'Important Info',
   '/vendor-midway': 'Vendor Midway',
   '/sponsors': 'Sponsors',
-  '/digital-program': 'Digital Program & FAQs',
+  '/digital-program': 'Digital Program',
   '/online-auction': 'Online Auction',
   '/testimony': 'Testimony',
-  '/parking-options': 'Parking Options',
+  '/parking-options': 'Parking',
   '/emergency-contacts': 'Emergency Contacts',
-  '/developer-information': 'Developer Information',
+  '/developer-information': 'Developer Info',
   '/about': 'About',
   '/feedback': 'Feedback',
   '/share': 'Share',
@@ -28,6 +28,17 @@ const PAGE_TITLES: Record<string, string> = {
 
 interface HeaderProps {
   onMenuToggle: () => void
+}
+
+const iconBtnStyle: React.CSSProperties = {
+  width: '40px',
+  height: '40px',
+  borderRadius: '10px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexShrink: 0,
+  color: 'var(--color-text-dark)',
 }
 
 export default function Header({ onMenuToggle }: HeaderProps) {
@@ -44,72 +55,80 @@ export default function Header({ onMenuToggle }: HeaderProps) {
   return (
     <header
       style={{
-        height: '56px',
-        backgroundColor: 'var(--primary)',
-        padding: '8px 12px',
+        height: 'var(--header-h)',
+        background: 'linear-gradient(180deg, #cfb991 0%, #c2ab82 100%)',
+        padding: '0 8px',
         display: 'flex',
         alignItems: 'center',
-        gap: '8px',
+        gap: '4px',
         position: 'fixed',
         top: 0,
         left: 0,
         right: 0,
         zIndex: 1000,
-        boxShadow: '0 1px 3px var(--shadow)',
+        boxShadow: '0 2px 6px rgba(0,0,0,0.08)',
       }}
     >
       <button
         onClick={onMenuToggle}
-        style={{ color: 'var(--text)', flexShrink: 0 }}
-        className="p-2 rounded-lg hover:bg-white/20 active:scale-95 transition-all duration-200"
+        aria-label="Open menu"
+        style={iconBtnStyle}
+        onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.25)' }}
+        onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent' }}
       >
-        <Menu size={24} />
+        <Menu size={22} />
       </button>
 
       <img
         src="/seal.png"
-        alt="Seal"
-        onError={(e) => {
-          e.currentTarget.style.display = 'none'
-        }}
-        style={{ width: '32px', height: '32px', flexShrink: 0 }}
+        alt=""
+        onError={e => { e.currentTarget.style.display = 'none' }}
+        style={{ width: '30px', height: '30px', flexShrink: 0, marginLeft: '2px' }}
       />
 
       <span
         style={{
           flex: 1,
-          fontSize: '18px',
+          fontSize: '16px',
           fontWeight: 700,
-          color: 'var(--text)',
+          color: 'var(--color-text-dark)',
           whiteSpace: 'nowrap',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
+          marginLeft: '6px',
+          letterSpacing: '-0.005em',
         }}
       >
         {title}
       </span>
 
       <button
-        style={{ color: 'var(--text)', flexShrink: 0 }}
-        className="p-2 rounded-lg hover:bg-white/20 active:scale-95 transition-all duration-200"
+        aria-label="Search"
+        style={iconBtnStyle}
+        onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.25)' }}
+        onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent' }}
       >
-        <Search size={22} />
+        <Search size={20} />
       </button>
       <button
-        style={{ color: 'var(--text)', flexShrink: 0 }}
-        className="p-2 rounded-lg hover:bg-white/20 active:scale-95 transition-all duration-200"
+        aria-label="Refresh"
+        style={iconBtnStyle}
+        onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.25)' }}
+        onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent' }}
       >
-        <RefreshCw size={22} />
+        <RefreshCw size={20} />
       </button>
 
       {loggedIn && (
         <button
           onClick={handleLogout}
-          title="Logout"
-          style={{ color: 'var(--text)', flexShrink: 0 }}
-          className="p-2 rounded-lg hover:bg-white/20 active:scale-95 transition-all duration-200"
+          title="Sign out"
+          aria-label="Sign out"
+          style={iconBtnStyle}
+          onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.25)' }}
+          onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent' }}
         >
-          <LogOut size={22} />
+          <LogOut size={20} />
         </button>
       )}
     </header>
