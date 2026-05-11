@@ -231,3 +231,55 @@ tbody tr:nth-child(even) {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ============================================================================
+   9. MOBILE-FIRST RESPONSIVE UTILITIES
+   ============================================================================ */
+
+/* Ensure no horizontal scroll on mobile */
+html, body {
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Min tap target for all interactive elements */
+button, a, [role="button"] {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Override for nav/header icon buttons that use fixed sizes */
+.btn-icon {
+  min-height: 44px !important;
+  min-width: 44px !important;
+}
+
+/* Form inputs: min 44px tap target on mobile */
+input, select, textarea {
+  min-height: 44px;
+  font-size: 16px; /* prevents iOS auto-zoom */
+}
+
+/* Mobile padding helper */
+@media (max-width: 639px) {
+  .mobile-px { padding-left: 16px; padding-right: 16px; }
+  .mobile-stack { flex-direction: column !important; }
+  .mobile-full { width: 100% !important; }
+}
+
+/* Desktop layout helper */
+@media (min-width: 640px) {
+  .tablet-row { flex-direction: row !important; }
+}
+
+/* Safe-area padding for iOS notch/home indicator */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Smooth scrolling */
+* {
+  scroll-behavior: smooth;
+}

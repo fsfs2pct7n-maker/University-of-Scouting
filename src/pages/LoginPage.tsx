@@ -14,7 +14,7 @@ export default function LoginPage() {
     }
     setError('')
     localStorage.setItem('studentEmail', email.trim().toLowerCase())
-    navigate('/')
+    navigate('/schedule')
   }
 
   function handleAdminLogin() {
@@ -87,8 +87,8 @@ export default function LoginPage() {
             placeholder="Enter your email"
             style={{
               width: '100%',
-              padding: '10px 12px',
-              fontSize: '15px',
+              padding: '12px 14px',
+              fontSize: '16px',
               border: '1.5px solid #e0d9cf',
               borderRadius: '8px',
               outline: 'none',
@@ -96,6 +96,7 @@ export default function LoginPage() {
               color: '#333',
               backgroundColor: '#fafaf8',
               transition: 'border-color 150ms',
+              minHeight: '48px',
             }}
             onFocus={e => { e.currentTarget.style.borderColor = '#cfb991' }}
             onBlur={e => { e.currentTarget.style.borderColor = '#e0d9cf' }}
@@ -117,8 +118,8 @@ export default function LoginPage() {
             placeholder="Enter password"
             style={{
               width: '100%',
-              padding: '10px 12px',
-              fontSize: '15px',
+              padding: '12px 14px',
+              fontSize: '16px',
               border: '1.5px solid #e0d9cf',
               borderRadius: '8px',
               outline: 'none',
@@ -126,6 +127,7 @@ export default function LoginPage() {
               color: '#333',
               backgroundColor: '#fafaf8',
               transition: 'border-color 150ms',
+              minHeight: '48px',
             }}
             onFocus={e => { e.currentTarget.style.borderColor = '#cfb991' }}
             onBlur={e => { e.currentTarget.style.borderColor = '#e0d9cf' }}

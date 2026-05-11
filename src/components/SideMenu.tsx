@@ -1,5 +1,6 @@
-import { ChevronDown } from 'lucide-react'
+import { X } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { getStudentEmail, getAdminEmail, isAdmin } from '../utils/auth'
 
 const MENU_ITEMS = [
   { label: 'Profile', path: '/profile' },
@@ -74,11 +75,24 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
             src="/seal.png"
             alt="Seal"
             onError={(e) => { e.currentTarget.style.display = 'none' }}
-            style={{ width: '40px', height: '40px', flexShrink: 0 }}
+            style={{ width: '36px', height: '36px', flexShrink: 0 }}
           />
-          <span style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text)' }}>
+          <span style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text)', flex: 1 }}>
             University of Scouting
           </span>
+          <button
+            onClick={onClose}
+            aria-label="Close menu"
+            style={{
+              width: '36px', height: '36px',
+              borderRadius: '8px',
+              backgroundColor: 'rgba(0,0,0,0.1)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              border: 'none', cursor: 'pointer', flexShrink: 0,
+            }}
+          >
+            <X size={18} color="var(--text)" />
+          </button>
         </div>
 
         <nav style={{ flex: 1, overflowY: 'auto' }}>
@@ -87,11 +101,13 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
               key={path}
               onClick={() => handleNavigate(path)}
               style={{
-                display: 'block',
+                display: 'flex',
+                alignItems: 'center',
                 width: '100%',
                 textAlign: 'left',
-                padding: '12px 16px',
-                fontSize: '16px',
+                minHeight: '48px',
+                padding: '10px 16px',
+                fontSize: '15px',
                 color: 'var(--text)',
                 background: 'none',
                 border: 'none',
@@ -111,13 +127,14 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
             borderTop: '1px solid #ddd',
             backgroundColor: 'var(--light-gray)',
             padding: '12px 16px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
           }}
         >
-          <span style={{ fontSize: '14px', color: 'var(--text)' }}>owenmedley2025@gmail.com</span>
-          <ChevronDown size={16} color="var(--text)" />
+          <p style={{ fontSize: '11px', color: '#aaa', marginBottom: '2px', textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 600 }}>
+            {isAdmin() ? 'Admin' : 'Signed in as'}
+          </p>
+          <span style={{ fontSize: '13px', color: 'var(--text)', wordBreak: 'break-all' }}>
+            {getAdminEmail() || getStudentEmail() || '—'}
+          </span>
         </div>
       </aside>
     </>

@@ -15,8 +15,8 @@ export default function Layout() {
       <main
         style={{
           marginTop: '56px',
-          marginBottom: '64px',
-          minHeight: 'calc(100vh - 120px)',
+          marginBottom: '80px',
+          minHeight: 'calc(100vh - 136px)',
           backgroundColor: 'var(--background)',
           padding: '12px',
         }}

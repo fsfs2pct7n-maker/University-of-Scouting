@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import Layout from './components/Layout'
 import LoginPage from './pages/LoginPage'
 import AdminDashboard from './pages/AdminDashboard'
+import LandingPage from './pages/LandingPage'
 import IndividualSchedule from './pages/IndividualSchedule'
 const Maps = lazy(() => import('./pages/Maps'))
 import SchedulesInfo from './pages/SchedulesInfo'
@@ -30,17 +31,29 @@ import Share from './pages/Share'
 import AppGallery from './pages/AppGallery'
 import { isLoggedIn } from './utils/auth'
 
+const LOADING = (
+  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', color: '#cfb991', fontSize: '14px' }}>
+    Loading…
+  </div>
+)
+
 function ProtectedRoute({ children }: { children: ReactNode }) {
-  if (!isLoggedIn()) {
-    return <Navigate to="/login" replace />
-  }
+  if (!isLoggedIn()) return <Navigate to="/login" replace />
   return <>{children}</>
+}
+
+/** / → landing if not logged in, schedule if logged in */
+function RootRoute() {
+  return isLoggedIn() ? <Navigate to="/schedule" replace /> : <LandingPage />
 }
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Root: landing or schedule */}
+        <Route path="/" element={<RootRoute />} />
+
         {/* Public */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/admin" element={<AdminDashboard />} />
@@ -49,13 +62,13 @@ export default function App() {
         <Route
           element={
             <ProtectedRoute>
-              <Suspense fallback={<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', color: '#cfb991', fontSize: '14px' }}>Loading…</div>}>
+              <Suspense fallback={LOADING}>
                 <Layout />
               </Suspense>
             </ProtectedRoute>
           }
         >
-          <Route path="/" element={<IndividualSchedule />} />
+          <Route path="/schedule" element={<IndividualSchedule />} />
           <Route path="/maps" element={<Maps />} />
           <Route path="/schedules-info" element={<SchedulesInfo />} />
           <Route path="/schedules-info/general-schedule" element={<GeneralSchedule />} />
@@ -81,8 +94,8 @@ export default function App() {
           <Route path="/app-gallery" element={<AppGallery />} />
         </Route>
 
-        {/* Catch-all → login */}
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        {/* Catch-all */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   )

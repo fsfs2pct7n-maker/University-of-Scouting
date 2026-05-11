@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { isLoggedIn, clearSession } from '../utils/auth'
 
 const PAGE_TITLES: Record<string, string> = {
-  '/': 'Individual Schedule',
+  '/schedule': 'Individual Schedule',
   '/maps': 'Maps',
   '/schedules-info': 'Schedules / Info',
   '/notifications': 'Notifications',

@@ -2,13 +2,13 @@ import { Clock, MapPin, List, Bell, Award, Building2, CalendarDays } from 'lucid
 import { useNavigate, useLocation } from 'react-router-dom'
 
 const NAV_ITEMS = [
-  { icon: Clock, label: 'Individual Schedule', path: '/' },
+  { icon: Clock, label: 'Schedule', path: '/schedule' },
   { icon: MapPin, label: 'Maps', path: '/maps' },
-  { icon: List, label: 'Schedules/ Info', path: '/schedules-info' },
-  { icon: Bell, label: 'Notifications', path: '/notifications' },
-  { icon: Award, label: 'Badge List', path: '/badge-list' },
-  { icon: Building2, label: 'Attractions and Amenities', path: '/attractions-amenities' },
-  { icon: CalendarDays, label: 'UoS Kokomo', path: '/uos-kokomo' },
+  { icon: List, label: 'Schedules', path: '/schedules-info' },
+  { icon: Bell, label: 'Alerts', path: '/notifications' },
+  { icon: Award, label: 'Badges', path: '/badge-list' },
+  { icon: Building2, label: 'Attractions', path: '/attractions-amenities' },
+  { icon: CalendarDays, label: 'Kokomo', path: '/uos-kokomo' },
 ]
 
 export default function BottomNav() {
@@ -18,7 +18,7 @@ export default function BottomNav() {
   return (
     <nav
       style={{
-        height: '64px',
+        height: '80px',
         backgroundColor: 'var(--primary)',
         position: 'fixed',
         bottom: 0,
@@ -28,6 +28,7 @@ export default function BottomNav() {
         display: 'flex',
         alignItems: 'stretch',
         boxShadow: '0 -1px 3px var(--shadow)',
+        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
       }}
     >
       {NAV_ITEMS.map(({ icon: Icon, label, path }) => {
@@ -38,35 +39,38 @@ export default function BottomNav() {
             onClick={() => navigate(path)}
             style={{
               flex: 1,
+              minWidth: 0,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '2px',
+              gap: '3px',
               color: 'var(--text)',
-              padding: '4px 2px',
+              padding: '6px 2px',
               border: 'none',
               cursor: 'pointer',
-              opacity: active ? 1 : 0.7,
+              opacity: active ? 1 : 0.65,
               transition: 'all 200ms ease-in-out',
               background: active ? 'rgba(255,255,255,0.3)' : 'none',
               borderRadius: '8px',
               transform: active ? 'scale(1.05)' : 'scale(1)',
+              // 44px minimum touch target via min-height from parent
             }}
             className="hover:bg-white/20 active:scale-95"
+            aria-label={label}
+            aria-current={active ? 'page' : undefined}
           >
-            <Icon size={24} strokeWidth={active ? 2.5 : 1.5} />
+            <Icon size={22} strokeWidth={active ? 2.5 : 1.75} />
             <span
               style={{
-                fontSize: '10px',
-                lineHeight: 1.2,
+                fontSize: '11px',
+                lineHeight: 1.1,
                 textAlign: 'center',
-                maxWidth: '100%',
-                overflow: 'hidden',
-                display: '-webkit-box',
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: 'vertical',
                 fontWeight: active ? 700 : 400,
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+                maxWidth: '100%',
+                textOverflow: 'ellipsis',
               }}
             >
               {label}

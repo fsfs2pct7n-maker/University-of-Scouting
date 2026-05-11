@@ -70,6 +70,18 @@ export default function Notifications() {
   // Merge and sort newest first
   const all = [...adminNotifs, ...HARDCODED].sort((a, b) => (b.sentAt ?? 0) - (a.sentAt ?? 0))
 
+  if (all.length === 0) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '300px', gap: '12px', padding: '32px 24px', textAlign: 'center' }}>
+        <span style={{ fontSize: '48px' }}>🔔</span>
+        <p style={{ fontSize: '17px', fontWeight: 700, color: '#3a2e1e' }}>No notifications yet</p>
+        <p style={{ fontSize: '14px', color: '#aaa', maxWidth: '260px', lineHeight: 1.5 }}>
+          You'll see updates here about your classes, schedule changes, and event announcements.
+        </p>
+      </div>
+    )
+  }
+
   return (
     <div style={{ padding: '16px' }}>
       <p
