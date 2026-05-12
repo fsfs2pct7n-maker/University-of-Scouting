@@ -99,6 +99,10 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html, body {
   background-color: var(--color-bg);
   color: var(--color-text-base);
@@ -112,6 +116,11 @@ html, body {
   overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
   min-width: 320px;
+}
+
+::selection {
+  background-color: var(--color-primary);
+  color: #fff;
 }
 
 /* ============================================================================
@@ -282,14 +291,24 @@ a:hover { color: var(--color-primary); text-decoration: underline; }
   background: var(--color-bg);
   border: 1px solid var(--color-border-soft);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  transition: box-shadow var(--transition-base), transform var(--transition-base);
+  box-shadow: var(--shadow-medium);
+  transition: box-shadow var(--transition-normal),
+              transform var(--transition-normal),
+              border-color var(--transition-normal);
   padding: var(--space-xl);
+}
+.card:hover {
+  box-shadow: var(--shadow-base);
 }
 .card-interactive { cursor: pointer; }
 .card-interactive:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-1px);
+  box-shadow: var(--shadow-deep);
+  transform: translateY(-2px);
+  border-color: var(--color-primary-light);
+}
+.card-interactive:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-medium);
 }
 
 /* ============================================================================

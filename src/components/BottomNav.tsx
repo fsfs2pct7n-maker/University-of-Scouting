@@ -52,11 +52,12 @@ export default function BottomNav() {
               padding: '6px 4px',
               margin: '8px 2px',
               borderRadius: '12px',
-              background: active ? '#fffaf0' : 'transparent',
-              color: active ? '#8a6f3f' : 'rgba(255,255,255,0.95)',
+              background: active ? '#ffffff' : 'transparent',
+              color: active ? '#7a5e2e' : 'rgba(255,255,255,0.95)',
               cursor: 'pointer',
-              boxShadow: active ? '0 2px 6px rgba(0,0,0,0.12)' : 'none',
-              transition: 'all 200ms ease',
+              boxShadow: active ? '0 4px 10px rgba(0,0,0,0.15), inset 0 0 0 1px rgba(207,185,145,0.5)' : 'none',
+              transition: 'background-color 180ms ease-out, color 180ms ease-out, box-shadow 180ms ease-out',
+              transform: active ? 'scale(1.02)' : 'scale(1)',
             }}
             onMouseEnter={e => {
               if (!active) e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.18)'
