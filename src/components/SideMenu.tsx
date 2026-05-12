@@ -1,28 +1,24 @@
-import {
-  X, User, AlertCircle, Store, Heart, BookOpen, Gavel, Quote,
-  Car, Siren, Code2, Info, MessageSquare, Share2, Images,
-} from 'lucide-react'
-import type { LucideIcon } from 'lucide-react'
+import { X } from 'lucide-react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { getStudentEmail, getAdminEmail, isAdmin } from '../utils/auth'
 
-type MenuItem = { label: string; path: string; icon: LucideIcon }
+type MenuItem = { label: string; path: string; icon: string }
 
 const MENU_ITEMS: MenuItem[] = [
-  { label: 'Profile',              path: '/profile',                icon: User },
-  { label: 'Important Information', path: '/important-information', icon: AlertCircle },
-  { label: 'Vendor Midway',        path: '/vendor-midway',          icon: Store },
-  { label: 'Sponsors',             path: '/sponsors',               icon: Heart },
-  { label: 'Digital Program & FAQs', path: '/digital-program',      icon: BookOpen },
-  { label: 'Online Auction',       path: '/online-auction',         icon: Gavel },
-  { label: 'Testimony',            path: '/testimony',              icon: Quote },
-  { label: 'Parking Options',      path: '/parking-options',        icon: Car },
-  { label: 'Emergency Contacts',   path: '/emergency-contacts',     icon: Siren },
-  { label: 'Developer Information', path: '/developer-information', icon: Code2 },
-  { label: 'About',                path: '/about',                  icon: Info },
-  { label: 'Feedback',             path: '/feedback',               icon: MessageSquare },
-  { label: 'Share',                path: '/share',                  icon: Share2 },
-  { label: 'App Gallery',          path: '/app-gallery',            icon: Images },
+  { label: 'Profile',                path: '/profile',                 icon: 'fa-user' },
+  { label: 'Important Information',  path: '/important-information',   icon: 'fa-info-circle' },
+  { label: 'Vendor Midway',          path: '/vendor-midway',           icon: 'fa-store' },
+  { label: 'Sponsors',               path: '/sponsors',                icon: 'fa-building' },
+  { label: 'Digital Program & FAQs', path: '/digital-program',         icon: 'fa-book' },
+  { label: 'Online Auction',         path: '/online-auction',          icon: 'fa-gavel' },
+  { label: 'Testimony',              path: '/testimony',               icon: 'fa-comment-dots' },
+  { label: 'Parking Options',        path: '/parking-options',         icon: 'fa-parking' },
+  { label: 'Emergency Contacts',     path: '/emergency-contacts',      icon: 'fa-exclamation-triangle' },
+  { label: 'Developer Information',  path: '/developer-information',   icon: 'fa-code' },
+  { label: 'About',                  path: '/about',                   icon: 'fa-circle-info' },
+  { label: 'Feedback',               path: '/feedback',                icon: 'fa-envelope' },
+  { label: 'Share',                  path: '/share',                   icon: 'fa-share-nodes' },
+  { label: 'App Gallery',            path: '/app-gallery',             icon: 'fa-images' },
 ]
 
 interface SideMenuProps {
@@ -113,12 +109,13 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
 
         {/* Menu items */}
         <nav style={{ flex: 1, overflowY: 'auto', padding: '6px 0' }}>
-          {MENU_ITEMS.map(({ label, path, icon: Icon }) => {
+          {MENU_ITEMS.map(({ label, path, icon }) => {
             const active = location.pathname === path
             return (
               <button
                 key={path}
                 onClick={() => handleNavigate(path)}
+                className={`menu-item ${active ? 'active' : ''}`}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -148,11 +145,17 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
                   }
                 }}
               >
-                <Icon
-                  size={18}
-                  color={active ? 'var(--color-primary-dark)' : 'var(--color-text-muted)'}
-                  strokeWidth={active ? 2.4 : 1.9}
-                  style={{ flexShrink: 0, transition: 'color 150ms ease-out' }}
+                <i
+                  className={`fas ${icon}`}
+                  aria-hidden="true"
+                  style={{
+                    width: '20px',
+                    fontSize: '16px',
+                    color: active ? 'var(--color-primary-dark)' : 'var(--color-text-base)',
+                    flexShrink: 0,
+                    textAlign: 'center',
+                    transition: 'color 150ms ease-out, transform 150ms ease-out',
+                  }}
                 />
                 <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {label}

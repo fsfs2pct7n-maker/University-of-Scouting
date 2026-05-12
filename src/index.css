@@ -1,3 +1,4 @@
+@import '@fortawesome/fontawesome-free/css/all.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -573,6 +574,21 @@ input.has-error:focus, textarea.has-error:focus, select.has-error:focus {
   justify-content: center;
   margin: 0 auto 16px;
   animation: float 3s ease-in-out infinite;
+}
+
+/* ============================================================================
+   SIDE MENU ICON HOVER (Font Awesome)
+   ============================================================================ */
+
+.menu-item i {
+  transition: color 150ms ease-out, transform 150ms ease-out;
+}
+.menu-item:hover i {
+  color: var(--color-primary) !important;
+  transform: scale(1.1);
+}
+.menu-item.active i {
+  color: var(--color-primary-dark) !important;
 }
 
 /* ============================================================================
