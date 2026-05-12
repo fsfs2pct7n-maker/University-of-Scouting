@@ -31,6 +31,10 @@
   --color-success: #388e3c;
   --color-success-bg: #edf7ee;
   --color-warning: #f57c00;
+  --color-warning-bg: #fff4e5;
+  --color-info: #1976d2;
+  --color-info-bg: #e8f1fc;
+  --color-subtle: #cccccc;
 
   /* ── Legacy aliases (keep existing inline styles working) ─────────────── */
   --primary: var(--color-primary);
@@ -375,6 +379,130 @@ button:focus-visible, a:focus-visible {
 
 @media (min-width: 1024px) {
   .desktop-hide   { display: none !important; }
+}
+
+/* ============================================================================
+   TOASTS — colored backgrounds with left-border accent
+   ============================================================================ */
+
+.toast {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 16px 12px 14px;
+  border-radius: var(--radius-md);
+  border-left: 4px solid;
+  box-shadow: var(--shadow-md);
+  animation: slideInUp 0.2s ease-out;
+}
+
+.toast-success { background: var(--color-success-bg); border-left-color: var(--color-success); color: #1e3a1f; }
+.toast-error   { background: var(--color-error-bg);   border-left-color: var(--color-error);   color: #5d1414; }
+.toast-warning { background: var(--color-warning-bg); border-left-color: var(--color-warning); color: #5a3300; }
+.toast-info    { background: var(--color-info-bg);    border-left-color: var(--color-info);    color: #0d3b6b; }
+
+.toast-title { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+.toast-body  { font-size: 13px; line-height: 1.45; }
+
+/* ============================================================================
+   BADGES / PILLS
+   ============================================================================ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary-bg);
+  color: var(--color-primary-dark);
+  border: 1px solid var(--color-primary-light);
+}
+.badge-success { background: var(--color-success-bg); color: var(--color-success); border-color: #c8e6c9; }
+.badge-error   { background: var(--color-error-bg);   color: var(--color-error);   border-color: #f5c6c1; }
+.badge-info    { background: var(--color-info-bg);    color: var(--color-info);    border-color: #bbdefb; }
+.badge-muted   { background: var(--color-bg-alt);     color: var(--color-text-muted); border-color: var(--color-border); }
+
+/* ============================================================================
+   SPINNER — CSS-only loader
+   ============================================================================ */
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--color-primary-light);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+.spinner-sm { width: 18px; height: 18px; border-width: 2px; }
+.spinner-lg { width: 40px; height: 40px; border-width: 4px; }
+
+/* ============================================================================
+   DIVIDERS
+   ============================================================================ */
+
+.divider { height: 1px; background: var(--color-border-soft); margin: var(--space-lg) 0; border: none; }
+.divider-strong { background: var(--color-border); }
+
+/* ============================================================================
+   FORM HELPERS
+   ============================================================================ */
+
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: 6px;
+  letter-spacing: 0.02em;
+}
+
+.form-help {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.form-error-text {
+  font-size: 12px;
+  color: var(--color-error);
+  margin-top: 4px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+input.has-error, textarea.has-error, select.has-error {
+  border-color: var(--color-error);
+  background-color: var(--color-error-bg);
+}
+input.has-error:focus, textarea.has-error:focus, select.has-error:focus {
+  box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.18);
+}
+
+/* ============================================================================
+   EMPTY STATE — tinted tile icon container
+   ============================================================================ */
+
+.empty-tile {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, #fefaf2 0%, var(--color-primary-bg) 100%);
+  border: 1px solid var(--color-primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
 }
 
 /* ============================================================================

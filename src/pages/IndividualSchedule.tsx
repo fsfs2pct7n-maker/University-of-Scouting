@@ -3,6 +3,7 @@ import {
   ChevronUp, ChevronDown, Bell, BellOff,
   Camera, Trash2, Search, X, Printer,
   BookOpen, UtensilsCrossed, MapPin, Clock,
+  CalendarX, SearchX,
 } from 'lucide-react'
 import { useAuth } from '../hooks/useAuth'
 import { getStudentRecord, updateStudentPhoto, deleteStudentPhoto } from '../utils/auth'
@@ -245,14 +246,20 @@ export default function IndividualSchedule() {
       <div>
         {PhotoSection}
         <div style={{ padding: '12px' }}>{NotifBanner}</div>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 'calc(100vh - 280px)', gap: '12px', padding: '32px 24px', textAlign: 'center' }}>
-          <span style={{ fontSize: '48px' }}>📚</span>
-          <p style={{ fontSize: '17px', fontWeight: 700, color: '#3a2e1e' }}>No classes registered yet</p>
-          <p style={{ fontSize: '14px', color: '#aaa', maxWidth: '280px', lineHeight: 1.5 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 'calc(100vh - 280px)', padding: '32px 24px', textAlign: 'center' }}>
+          <div className="empty-tile">
+            <CalendarX size={32} color="var(--color-primary-dark)" strokeWidth={1.7} />
+          </div>
+          <p style={{ fontSize: '17px', fontWeight: 700, color: 'var(--color-text-dark)', marginBottom: '8px' }}>
+            No classes registered yet
+          </p>
+          <p style={{ fontSize: '14px', color: 'var(--color-text-secondary)', maxWidth: '300px', lineHeight: 1.55 }}>
             Your schedule will appear here once an admin assigns your classes. Check back soon!
           </p>
           {studentEmail && (
-            <p style={{ fontSize: '12px', color: '#ccc', marginTop: '4px' }}>Signed in as {studentEmail}</p>
+            <p style={{ fontSize: '12px', color: 'var(--color-text-faint)', marginTop: '12px' }}>
+              Signed in as {studentEmail}
+            </p>
           )}
         </div>
       </div>
@@ -323,10 +330,16 @@ export default function IndividualSchedule() {
 
         {/* No search results */}
         {filtered.length === 0 && searchQuery && (
-          <div style={{ textAlign: 'center', padding: '32px 16px' }}>
-            <span style={{ fontSize: '36px', display: 'block', marginBottom: '10px' }}>🔍</span>
-            <p style={{ fontSize: '15px', fontWeight: 700, color: '#555', marginBottom: '6px' }}>No classes found</p>
-            <p style={{ fontSize: '13px', color: '#aaa' }}>No results for "{searchQuery}"</p>
+          <div style={{ textAlign: 'center', padding: '40px 16px' }}>
+            <div className="empty-tile" style={{ width: '56px', height: '56px', marginBottom: '12px' }}>
+              <SearchX size={24} color="var(--color-primary-dark)" strokeWidth={1.8} />
+            </div>
+            <p style={{ fontSize: '15px', fontWeight: 700, color: 'var(--color-text-dark)', marginBottom: '4px' }}>
+              No classes found
+            </p>
+            <p style={{ fontSize: '13px', color: 'var(--color-text-muted)' }}>
+              No results for "{searchQuery}"
+            </p>
           </div>
         )}
 

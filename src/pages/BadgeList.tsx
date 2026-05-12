@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChevronUp, ChevronDown, Clock, MapPin } from 'lucide-react'
+import { ChevronUp, ChevronDown, Clock, MapPin, ClipboardList } from 'lucide-react'
 import { BADGES, type Badge } from '../data/badges'
 import { useIsMobile } from '../hooks/useWindowSize'
 
@@ -31,10 +31,16 @@ export default function BadgeList() {
 
   if (sorted.length === 0) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '300px', gap: '10px', padding: '32px 24px', textAlign: 'center' }}>
-        <span style={{ fontSize: '48px' }}>📋</span>
-        <p style={{ fontSize: '16px', fontWeight: 700, color: '#555' }}>No classes available</p>
-        <p style={{ fontSize: '13px', color: '#aaa' }}>Check back later for the full class list.</p>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '320px', padding: '40px 24px', textAlign: 'center' }}>
+        <div className="empty-tile">
+          <ClipboardList size={32} color="var(--color-primary-dark)" strokeWidth={1.7} />
+        </div>
+        <p style={{ fontSize: '17px', fontWeight: 700, color: 'var(--color-text-dark)', marginBottom: '8px' }}>
+          No classes available
+        </p>
+        <p style={{ fontSize: '14px', color: 'var(--color-text-secondary)' }}>
+          Check back later for the full class list.
+        </p>
       </div>
     )
   }

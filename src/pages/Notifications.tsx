@@ -1,4 +1,4 @@
-import { Bell, Info } from 'lucide-react'
+import { Bell, Info, BellOff } from 'lucide-react'
 import { getAdminNotifications, getStudentRecord, isAdmin, getStudentEmail } from '../utils/auth'
 
 type NotifItem = {
@@ -72,10 +72,14 @@ export default function Notifications() {
 
   if (all.length === 0) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '300px', gap: '12px', padding: '32px 24px', textAlign: 'center' }}>
-        <span style={{ fontSize: '48px' }}>🔔</span>
-        <p style={{ fontSize: '17px', fontWeight: 700, color: '#3a2e1e' }}>No notifications yet</p>
-        <p style={{ fontSize: '14px', color: '#aaa', maxWidth: '260px', lineHeight: 1.5 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '320px', padding: '40px 24px', textAlign: 'center' }}>
+        <div className="empty-tile">
+          <BellOff size={32} color="var(--color-primary-dark)" strokeWidth={1.7} />
+        </div>
+        <p style={{ fontSize: '17px', fontWeight: 700, color: 'var(--color-text-dark)', marginBottom: '8px' }}>
+          No notifications yet
+        </p>
+        <p style={{ fontSize: '14px', color: 'var(--color-text-secondary)', maxWidth: '300px', lineHeight: 1.55 }}>
           You'll see updates here about your classes, schedule changes, and event announcements.
         </p>
       </div>

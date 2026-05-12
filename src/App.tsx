@@ -32,8 +32,9 @@ import AppGallery from './pages/AppGallery'
 import { isLoggedIn } from './utils/auth'
 
 const LOADING = (
-  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', color: '#cfb991', fontSize: '14px' }}>
-    Loading…
+  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: 'calc(100vh - 136px)', gap: '14px' }}>
+    <div className="spinner" />
+    <p style={{ fontSize: '13px', color: 'var(--color-text-muted)', fontWeight: 500 }}>Loading…</p>
   </div>
 )
 
