@@ -1,0 +1,31 @@
+{
+  "name": "University of Scouting",
+  "short_name": "UoS Sagamore",
+  "description": "Sagamore Council · University of Scouting event app",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#cfb991",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
+    }
+  ]
+}
