@@ -577,6 +577,74 @@ input.has-error:focus, textarea.has-error:focus, select.has-error:focus {
 }
 
 /* ============================================================================
+   PHASE 11 — Opt-in animation primitives
+   Scoped to classes so we don't accidentally clobber Header / BottomNav /
+   modal buttons that already have their own hover behavior.
+   ============================================================================ */
+
+/* alias the spec's keyword to our existing slideInUp keyframe */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Card stagger — apply .card-stagger to a flex/grid container, children
+   fade in with a stagger. Safe because it only targets direct children of
+   the .card-stagger wrapper, not every .card in the app. */
+.card-stagger > * {
+  animation: slideUp 320ms ease-out backwards;
+}
+.card-stagger > *:nth-child(1) { animation-delay:  40ms; }
+.card-stagger > *:nth-child(2) { animation-delay:  90ms; }
+.card-stagger > *:nth-child(3) { animation-delay: 140ms; }
+.card-stagger > *:nth-child(4) { animation-delay: 190ms; }
+.card-stagger > *:nth-child(5) { animation-delay: 240ms; }
+.card-stagger > *:nth-child(6) { animation-delay: 290ms; }
+.card-stagger > *:nth-child(7) { animation-delay: 340ms; }
+.card-stagger > *:nth-child(n+8) { animation-delay: 380ms; }
+
+/* Ripple — opt-in. Add `ripple-on-click` class to a relatively-positioned
+   element and a ripple emanates from the center on :active.
+   Note: requires the host element to have overflow:hidden + position:relative. */
+@keyframes ripple {
+  to { width: 360px; height: 360px; opacity: 0; }
+}
+.ripple-on-click {
+  position: relative;
+  overflow: hidden;
+}
+.ripple-on-click::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.ripple-on-click:active::after {
+  animation: ripple 550ms ease-out;
+}
+
+/* For .btn-primary specifically, ripple uses primary-light tint */
+.btn-primary.ripple-on-click::after {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+/* Hover lift — opt-in alternative to .card-interactive (which already
+   exists); use .hover-lift on any element that should lift on hover. */
+.hover-lift {
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-deep);
+}
+
+/* ============================================================================
    SIDE MENU ICON HOVER (Font Awesome)
    ============================================================================ */
 

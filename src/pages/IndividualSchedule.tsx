@@ -17,6 +17,7 @@ import {
   setNotificationPref,
 } from '../services/notificationService'
 import { printSchedule } from '../services/pdfService'
+import { isDriveConfigured, uploadPhotoToDrive } from '../services/driveService'
 import ClassDetailsModal from '../components/ClassDetailsModal'
 
 type SortKey = keyof Badge
@@ -114,10 +115,27 @@ export default function IndividualSchedule() {
   // ── Photo handlers ────────────────────────────────────────────────────────
   function handlePhotoClick() { fileInputRef.current?.click() }
 
-  function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file || !studentEmail) return
     if (file.size > 2 * 1024 * 1024) { alert('Photo must be under 2 MB.'); return }
+    const input = e.target
+
+    // Try Google Drive upload first (if configured)
+    if (isDriveConfigured()) {
+      try {
+        const url = await uploadPhotoToDrive(file, studentEmail)
+        updateStudentPhoto(studentEmail, url)
+        setPhotoSrc(url)
+        input.value = ''
+        return
+      } catch (err) {
+        console.warn('Drive upload failed, falling back to local storage:', err)
+        // fall through to base64 fallback
+      }
+    }
+
+    // Fallback: base64 in localStorage (existing behavior)
     const reader = new FileReader()
     reader.onload = ev => {
       const base64 = ev.target?.result as string
@@ -125,7 +143,7 @@ export default function IndividualSchedule() {
       setPhotoSrc(base64)
     }
     reader.readAsDataURL(file)
-    e.target.value = ''
+    input.value = ''
   }
 
   function handlePhotoDelete() {
@@ -234,9 +252,20 @@ export default function IndividualSchedule() {
           </button>
         )}
       </div>
-      <p style={{ marginTop: '6px', fontSize: '11px', color: 'var(--gray)' }}>
-        {photoSrc ? 'Tap to change' : 'Tap to add photo'}
-      </p>
+      {photoSrc ? (
+        <p style={{ marginTop: '6px', fontSize: '11px', color: 'var(--gray)' }}>
+          Tap to change
+        </p>
+      ) : (
+        <>
+          <p style={{ marginTop: '6px', fontSize: '13px', fontWeight: 600, color: 'var(--color-text-dark)' }}>
+            Add Your Photo
+          </p>
+          <p style={{ fontSize: '12px', color: '#999999', marginTop: '1px' }}>
+            For the Gallery
+          </p>
+        </>
+      )}
     </div>
   )
 
