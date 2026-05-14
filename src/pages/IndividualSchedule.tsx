@@ -110,40 +110,57 @@ export default function IndividualSchedule() {
     () => (studentEmail ? getStudentRecord(studentEmail)?.photoBase64 : undefined)
   )
   const [photoHover, setPhotoHover] = useState(false)
+  const [pendingPhoto, setPendingPhoto] = useState<{ file: File; preview: string } | null>(null)
+  const [uploading, setUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   // ── Photo handlers ────────────────────────────────────────────────────────
   function handlePhotoClick() { fileInputRef.current?.click() }
 
-  async function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file || !studentEmail) return
     if (file.size > 2 * 1024 * 1024) { alert('Photo must be under 2 MB.'); return }
-    const input = e.target
+    // Read once into a data URL — we'll use it both as the preview src
+    // and as the fallback storage value if Drive isn't configured.
+    const reader = new FileReader()
+    reader.onload = ev => {
+      const preview = ev.target?.result as string
+      setPendingPhoto({ file, preview })
+    }
+    reader.readAsDataURL(file)
+    e.target.value = ''
+  }
 
-    // Try Google Drive upload first (if configured)
+  async function confirmPhotoUpload() {
+    if (!pendingPhoto || !studentEmail) return
+    const { file, preview } = pendingPhoto
+    setUploading(true)
+
+    // Try Google Drive first when configured
     if (isDriveConfigured()) {
       try {
         const url = await uploadPhotoToDrive(file, studentEmail)
         updateStudentPhoto(studentEmail, url)
         setPhotoSrc(url)
-        input.value = ''
+        setPendingPhoto(null)
+        setUploading(false)
         return
       } catch (err) {
         console.warn('Drive upload failed, falling back to local storage:', err)
-        // fall through to base64 fallback
       }
     }
 
-    // Fallback: base64 in localStorage (existing behavior)
-    const reader = new FileReader()
-    reader.onload = ev => {
-      const base64 = ev.target?.result as string
-      updateStudentPhoto(studentEmail, base64)
-      setPhotoSrc(base64)
-    }
-    reader.readAsDataURL(file)
-    input.value = ''
+    // Fallback: base64 in localStorage
+    updateStudentPhoto(studentEmail, preview)
+    setPhotoSrc(preview)
+    setPendingPhoto(null)
+    setUploading(false)
+  }
+
+  function cancelPhotoUpload() {
+    if (uploading) return
+    setPendingPhoto(null)
   }
 
   function handlePhotoDelete() {
@@ -269,6 +286,120 @@ export default function IndividualSchedule() {
     </div>
   )
 
+  // ── Photo confirmation modal ─────────────────────────────────────────────
+  const PhotoConfirmModal = pendingPhoto && (
+    <div
+      onClick={cancelPhotoUpload}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.55)',
+        zIndex: 1300,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '20px',
+        animation: 'fadeIn 0.2s ease-out',
+      }}
+    >
+      <div
+        onClick={e => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="photo-confirm-title"
+        style={{
+          backgroundColor: '#fff',
+          borderRadius: 'var(--radius-xl)',
+          padding: '24px',
+          maxWidth: '320px',
+          width: '100%',
+          boxShadow: 'var(--shadow-floating)',
+          animation: 'scaleIn 0.2s ease-out',
+        }}
+      >
+        <h2
+          id="photo-confirm-title"
+          style={{
+            fontSize: '18px',
+            fontWeight: 800,
+            color: 'var(--color-text-dark)',
+            marginBottom: '4px',
+            textAlign: 'center',
+            letterSpacing: '-0.25px',
+          }}
+        >
+          Use this photo?
+        </h2>
+        <p style={{
+          fontSize: '13px',
+          color: 'var(--color-text-secondary)',
+          marginBottom: '20px',
+          textAlign: 'center',
+          lineHeight: 1.5,
+        }}>
+          This will appear on your profile and in the gallery.
+        </p>
+
+        {/* Preview — 200×200 circle, centered */}
+        <div style={{
+          width: '200px',
+          height: '200px',
+          borderRadius: '50%',
+          overflow: 'hidden',
+          margin: '0 auto 22px',
+          border: '3px solid var(--color-primary)',
+          boxShadow: '0 6px 18px rgba(0,0,0,0.12)',
+          backgroundColor: 'var(--color-primary-bg)',
+        }}>
+          <img
+            src={pendingPhoto.preview}
+            alt="Photo preview"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+          />
+        </div>
+
+        {/* Action buttons */}
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <button
+            onClick={cancelPhotoUpload}
+            disabled={uploading}
+            style={{
+              flex: 1,
+              height: '44px',
+              backgroundColor: 'transparent',
+              color: 'var(--color-text-secondary)',
+              fontWeight: 600,
+              fontSize: '14px',
+              border: '1.5px solid var(--color-border)',
+              borderRadius: 'var(--radius-md)',
+              cursor: uploading ? 'not-allowed' : 'pointer',
+              opacity: uploading ? 0.5 : 1,
+              transition: 'background-color 150ms ease-out',
+            }}
+            onMouseEnter={e => { if (!uploading) e.currentTarget.style.backgroundColor = 'var(--color-bg-alt)' }}
+            onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent' }}
+          >
+            Cancel
+          </button>
+          <button
+            onClick={confirmPhotoUpload}
+            disabled={uploading}
+            className="btn-primary"
+            style={{
+              flex: 1,
+              height: '44px',
+              fontSize: '14px',
+              opacity: uploading ? 0.7 : 1,
+              cursor: uploading ? 'wait' : 'pointer',
+            }}
+          >
+            {uploading ? 'Saving…' : 'Confirm'}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+
   // ── Empty state ───────────────────────────────────────────────────────────
   if (myClasses.length === 0) {
     return (
@@ -291,6 +422,7 @@ export default function IndividualSchedule() {
             </p>
           )}
         </div>
+        {PhotoConfirmModal}
       </div>
     )
   }
@@ -429,6 +561,7 @@ export default function IndividualSchedule() {
       </div>
 
       <ClassDetailsModal badge={selectedBadge} onClose={() => setSelectedBadge(null)} />
+      {PhotoConfirmModal}
     </div>
   )
 }
